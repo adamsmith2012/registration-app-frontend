@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="App">
+  <head>
+    <meta charset="utf-8">
+    <title>CourseWEB</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="app.js" charset="utf-8"></script>
+  </head>
+  <body ng-controller="mainController as main">
+
+    <form ng-submit="main.login(userPass)">
+      <input type="text" ng-model="userPass.username" placeholder="username"/>
+      <input type="password" ng-model="userPass.password" placeholder="password"/>
+      <input type="submit"/>
+    </form>
+
+    <p>Username: {{ main.student.username }}</p>
+
+    <h3 ng-click="main.getUsers()">See secret stuff</h3>
+
+    <div> {{ main.error }} </div>
+
+    <div ng-repeat="student in main.students">
+      {{ student.username }}
+    </div>
+
+    <a href="#" ng-click="main.logout()">Log Out</a>
+
+  </body>
+</html>
