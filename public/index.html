@@ -4,27 +4,16 @@
     <meta charset="utf-8">
     <title>CourseWEB</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
     <script src="app.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
   </head>
-  <body ng-controller="mainController as main">
+  <body>
 
-    <form ng-submit="main.login(userPass)">
-      <input type="text" ng-model="userPass.username" placeholder="username"/>
-      <input type="password" ng-model="userPass.password" placeholder="password"/>
-      <input type="submit"/>
-    </form>
-
-    <p>Username: {{ main.student.username }}</p>
-
-    <h3 ng-click="main.getUsers()">See secret stuff</h3>
-
-    <div> {{ main.error }} </div>
-
-    <div ng-repeat="student in main.students">
-      {{ student.username }}
-    </div>
-
-    <a href="#" ng-click="main.logout()">Log Out</a>
+    <!-- Location of Partials -->
+    <base href="/">
+    <div ng-view></div>
 
   </body>
 </html>
