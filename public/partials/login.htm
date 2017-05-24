@@ -1,0 +1,34 @@
+<div class="vertical-center" ng-controller="loginController as ctrl">
+  <div class="container">
+    <div class="col-md-4 panel panel-default">
+      <h5>LOGO</h5>
+    </div>
+    <div class="col-md-offset-2 col-md-6 panel panel-default">
+      <div class="panel-body">
+        <form class="form-horizontal" ng-submit="ctrl.login(userPass)">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" ng-model="userPass.username" placeholder="Username" required="true"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="password" ng-model="userPass.password" placeholder="Password" required="true"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <input class="btn btn-default" type="submit" value="Submit">
+            </div>
+          </div>
+        </form>
+
+        <p ng-if="ctrl.student.username">Welcome, {{ ctrl.student.first_name }}!</p>
+
+        <!-- <a href="/home" ng-click="ctrl.logout()">Log Out</a> -->
+      </div>
+    </div>
+  </div>
+</div>
