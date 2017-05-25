@@ -12,10 +12,11 @@ app.controller('loginController', ['$http', '$location', function($http, $locati
       method: 'POST',
       url: URL + '/students/login',
       data: { student: { username: userPass.username, password: userPass.password }}
-    }).then(function(response, error) {
+    }).then(function(response) {
       if (response.data.status == 200) {
         this.student = response.data.student;
         localStorage.setItem('token', JSON.stringify(response.data.token));
+        localStorage.setItem('user', JSON.stringify(response.data.student));
         $location.path('/home');
       } else {
         console.log("Incorrect username or password");
@@ -25,6 +26,8 @@ app.controller('loginController', ['$http', '$location', function($http, $locati
 
   this.logout = function() {
     localStorage.clear('token');
+    localStorage.clear('user');
+    $location.path('/');
     // location.reload();
   }
 
@@ -51,6 +54,45 @@ app.controller('homeController', ['$http', '$location', function($http, $locatio
 
 }]);
 
+app.controller('scheduleController', ['$http', '$location', function($http, $location) {
+  this.student = JSON.parse(localStorage.getItem('user'));
+  this.schedule = {};
+  this.terms = {};
+
+  this.getTerms = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/terms'
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.terms = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  this.getSchedule = function(term) {
+    $http({
+      method: 'GET',
+      url: URL + '/students/' + this.student.id + '/terms/' + term + '/courses',
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.schedule = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls done on page load
+  this.getTerms();
+
+}]);
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -59,5 +101,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/home", {
       templateUrl : "partials/home.htm"
+    })
+    .when("/schedule", {
+      templateUrl : "partials/schedule.htm"
     });
 }]);

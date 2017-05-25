@@ -1,0 +1,22 @@
+<div ng-controller="scheduleController as ctrl">
+  <div class="container">
+    <h3>Schedule</h3>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Term
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li ng-repeat="term in ctrl.terms"><a ng-click="ctrl.getSchedule(term.id)" href=''>{{ term.season }} {{ term.year }}</a></li>
+      </ul>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div ng-repeat="sch in ctrl.schedule" class="">
+          {{ sch.name }} , Professer {{ sch.instructor.last_name }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
