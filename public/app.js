@@ -81,12 +81,34 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
     }.bind(this));
   }
 
-  // Calls done on page load
+  // Calls executed on page load
   this.getTerms();
 
 }]);
 
-app.controller('courseController', ['$http', '$location', function($http, $location) {
+app.controller('courseController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams) {
+  this.courseId = $routeParams.id;
+  this.student = JSON.parse(localStorage.getItem('user'));
+  this.course = {};
+
+  this.getCourse = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/courses/' + this.courseId,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.course = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls executed on page load
+  this.getCourse();
 
 }]);
 

@@ -1,4 +1,25 @@
-<div ng-controller="scheduleController as ctrl">
+<div ng-controller="courseController as ctrl">
   <div class="container">
+    <h3>{{ctrl.course.name}}</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h5>Instructor: {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}</h5>
+        <h5>Meeting times:</h5>
+        <table class="table">
+          <tr>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Building</th>
+            <th>Room</th>
+          </tr>
+          <tr ng-repeat="meeting in ctrl.course.meetings">
+            <td>{{ meeting.day }}</td>
+            <td>{{ meeting.time }}</td>
+            <td>{{ meeting.room.building.name }}</td>
+            <td>{{ meeting.room.name }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
