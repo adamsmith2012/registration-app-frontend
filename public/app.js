@@ -1,6 +1,10 @@
 var app = angular.module('App', ['ngRoute']);
 
-URL = 'http://localhost:3000';
+if(window.location.origin == "http://localhost:8000") {
+  URL = 'http://localhost:3000';
+} else {
+  URL = "https://courseweb-api.herokuapp.com";
+}
 
 app.controller('loginController', ['$http', '$location', function($http, $location) {
   this.userPass = {};
