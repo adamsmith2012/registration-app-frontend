@@ -1,11 +1,11 @@
 <div class="vertical-center" ng-controller="loginController as ctrl">
   <div class="container">
     <div class="col-md-4 panel panel-default">
-      <h5>LOGO</h5>
+      <h5>CourseWEB</h5>
     </div>
     <div class="col-md-offset-2 col-md-6 panel panel-default">
       <div class="panel-body">
-        <form class="form-horizontal" ng-submit="ctrl.login(userPass)">
+        <form class="form-horizontal" ng-submit="main.login(userPass)">
           <div class="form-group">
             <label class="col-sm-2 control-label">Username</label>
             <div class="col-sm-10">
@@ -24,10 +24,6 @@
             </div>
           </div>
         </form>
-
-        <p ng-if="ctrl.student.username">Welcome, {{ ctrl.student.first_name }}!</p>
-
-        <!-- <a href="/home" ng-click="ctrl.logout()">Log Out</a> -->
       </div>
     </div>
   </div>

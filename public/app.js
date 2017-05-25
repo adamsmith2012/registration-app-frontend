@@ -6,10 +6,9 @@ if(window.location.origin == "http://localhost:8000") {
   URL = "https://courseweb-api.herokuapp.com";
 }
 
-app.controller('loginController', ['$http', '$location', function($http, $location) {
-  this.userPass = {};
+app.controller('mainController', ['$http', '$location', function($http, $location) {
+
   this.student = {};
-  this.students = {};
 
   this.login = function(userPass) {
     $http({
@@ -22,6 +21,7 @@ app.controller('loginController', ['$http', '$location', function($http, $locati
         localStorage.setItem('token', JSON.stringify(response.data.token));
         localStorage.setItem('user', JSON.stringify(response.data.student));
         $location.path('/home');
+        console.log(this.student);
       } else {
         console.log("Incorrect username or password");
       }
@@ -31,26 +31,13 @@ app.controller('loginController', ['$http', '$location', function($http, $locati
   this.logout = function() {
     localStorage.clear('token');
     localStorage.clear('user');
+    this.student = {};
     $location.path('/');
-    // location.reload();
   }
 
-  this.getUsers = function() {
-    $http({
-      method: 'GET',
-      url: URL + '/students',
-      headers: {
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
-      }
-    }).then(function(response) {
-      if (response.data.status == 401) {
-        this.error = "Unauthorized";
-      } else {
-        this.error = null;
-        this.students = response.data;
-      }
-    }.bind(this));
-  }
+}]);
+
+app.controller('loginController', ['$http', '$location', function($http, $location) {
 
 }]);
 
@@ -60,6 +47,7 @@ app.controller('homeController', ['$http', '$location', function($http, $locatio
 
 app.controller('scheduleController', ['$http', '$location', function($http, $location) {
   this.student = JSON.parse(localStorage.getItem('user'));
+  this.selectedTerm = null; // integer
   this.schedule = {};
   this.terms = {};
 
@@ -79,12 +67,13 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
   this.getSchedule = function(term) {
     $http({
       method: 'GET',
-      url: URL + '/students/' + this.student.id + '/terms/' + term + '/courses',
+      url: URL + '/students/' + this.student.id + '/terms/' + term.id + '/courses',
       headers: {
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
       }
     }).then(function(response) {
       if (response.status == 200) {
+        this.selectedTerm = term;
         this.schedule = response.data;
       } else {
         console.log("Failed");
@@ -94,6 +83,10 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
 
   // Calls done on page load
   this.getTerms();
+
+}]);
+
+app.controller('courseController', ['$http', '$location', function($http, $location) {
 
 }]);
 
@@ -108,5 +101,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/schedule", {
       templateUrl : "partials/schedule.htm"
+    })
+    .when("/course/:id", {
+      templateUrl : "partials/course.htm"
     });
 }]);
