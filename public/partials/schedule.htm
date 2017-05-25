@@ -18,8 +18,8 @@
       <div class="panel-body">
         <div class="panel panel-default" ng-repeat="course in ctrl.schedule" class="">
           <div class="panel-body">
-            <h4><a href="/course/{{course.id}}"> Course: {{ course.name }}</a></h4>
-            <p>Instructor : {{ course.instructor.last_name }}, {{ course.instructor.first_name }}</p>
+            <h4><a href="/course/{{course.id}}">{{ course.name }}</a></h4>
+            <p>Instructor: {{ course.instructor.last_name }}, {{ course.instructor.first_name }}</p>
           </div>
         </div>
       </div>
