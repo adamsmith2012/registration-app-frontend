@@ -11,3 +11,7 @@
   display: flex;
   align-items: center;
 }
+
+.panel-button {
+  margin: -5px;
+}
