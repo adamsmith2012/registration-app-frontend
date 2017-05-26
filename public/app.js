@@ -179,6 +179,40 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
 
 }]);
 
+app.controller('registerController', ['$http', '$location', function($http, $location) {
+  this.student = JSON.parse(localStorage.getItem('user'));
+  this.crns = [null];
+
+  this.addCRN = function() {
+    this.crns.push(null);
+    console.log(this.crns);
+  }
+
+  this.register = function() {
+
+    this.crns.forEach(function(crn) {
+      var course_id = crn;
+      $http({
+        method: 'POST',
+        url: URL + '/schedules',
+        data: { student_id: this.student.id, course_id: course_id },
+        headers: {
+          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+        }
+      }).then(function(response) {
+        if (response.status == 201) {
+          console.log("Registered!");
+        } else {
+          console.log("Failed");
+        }
+      }.bind(this));
+    }.bind(this));
+
+  }
+
+}]);
+
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -199,6 +233,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/student-info", {
       templateUrl : "partials/student-info.htm"
+    })
+    .when("/register", {
+      templateUrl : "partials/register.htm"
     })
     .otherwise({
       redirectTo : "/"
