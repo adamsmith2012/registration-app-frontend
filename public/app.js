@@ -126,5 +126,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/course/:id", {
       templateUrl : "partials/course.htm"
-    });
+    })
+    .otherwise({
+      redirectTo : "/"
+    }) ;
 }]);
