@@ -30,7 +30,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li ng-if="main.student.first_name"><p class="navbar-text">Welcome, {{ main.student.first_name }}!</p></li>
+            <li ng-if="main.student.first_name"><p class="navbar-text">Welcome, <a href="/student-info">{{ main.student.first_name }}</a>!</p></li>
             <li ng-if="main.student.first_name"><a ng-click="main.logout()" href=''>Sign Out</a></li>
             <li ng-if="!main.student.first_name"><a ng-click="main.logout()" href='/'>Log In</a></li>
           </ul>

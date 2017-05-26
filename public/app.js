@@ -152,6 +152,33 @@ app.controller('coursesController', ['$http', '$location', function($http, $loca
 
 }]);
 
+app.controller('studentInfoController', ['$http', '$location', function($http, $location) {
+
+  this.student = JSON.parse(localStorage.getItem('user'));
+  this.editMode = false;
+
+  this.editInfo = function() {
+    $http({
+      method: 'PUT',
+      url: URL + '/students/' + this.student.id,
+      data: this.student,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.student = response.data;
+        console.log(this.student);
+        localStorage.setItem('user', JSON.stringify(this.student));
+        this.editMode = false;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+}]);
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -169,6 +196,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/courses", {
       templateUrl : "partials/courses.htm"
+    })
+    .when("/student-info", {
+      templateUrl : "partials/student-info.htm"
     })
     .otherwise({
       redirectTo : "/"
