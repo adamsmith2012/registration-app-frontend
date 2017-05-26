@@ -112,6 +112,46 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
 
 }]);
 
+app.controller('coursesController', ['$http', '$location', function($http, $location) {
+
+  this.terms = {};
+  this.courses = {};
+
+  this.getTerms = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/terms'
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.terms = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  this.getCourses = function(term) {
+    $http({
+      method: 'GET',
+      url: URL + '/terms/' + term.id + '/courses',
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.selectedTerm = term;
+        this.courses = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls executed on page load
+  this.getTerms();
+
+}]);
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -126,6 +166,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/course/:id", {
       templateUrl : "partials/course.htm"
+    })
+    .when("/courses", {
+      templateUrl : "partials/courses.htm"
     })
     .otherwise({
       redirectTo : "/"
