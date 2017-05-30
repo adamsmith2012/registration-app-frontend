@@ -8,7 +8,7 @@ if(window.location.origin == "http://localhost:8000") {
 
 app.controller('mainController', ['$http', '$location', function($http, $location) {
 
-  this.student = {};
+  this.student = JSON.parse(localStorage.getItem('user'));
 
   this.login = function(userPass) {
     $http({
@@ -21,7 +21,6 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
         localStorage.setItem('token', JSON.stringify(response.data.token));
         localStorage.setItem('user', JSON.stringify(response.data.student));
         $location.path('/home');
-        console.log(this.student);
       } else {
         console.log("Incorrect username or password");
       }
