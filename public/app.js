@@ -50,6 +50,7 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
   this.selectedTerm = null; // integer
   this.schedule = {};
   this.terms = {};
+  this.selectedTerm = { id: null };
 
   this.getTerms = function() {
     $http({
@@ -64,25 +65,47 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
     }.bind(this));
   }
 
-  this.getSchedule = function(term) {
+  this.getSchedule = function() {
     $http({
       method: 'GET',
-      url: URL + '/students/' + this.student.id + '/terms/' + term.id + '/courses',
+      url: URL + '/students/' + this.student.id + '/schedules/',
       headers: {
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
       }
     }).then(function(response) {
       if (response.status == 200) {
-        this.selectedTerm = term;
         this.schedule = response.data;
+        console.log(this.schedule);
       } else {
         console.log("Failed");
       }
     }.bind(this));
   }
 
+  this.dropCourse = function(scheduleId) {
+    $http({
+      method: 'DELETE',
+      url: URL + '/schedules/' + scheduleId,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 204) {
+        console.log("Successfully dropped course");
+        this.getSchedule();
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  this.filterSchedule = function(sch) {
+    return sch.course.term_id == this.selectedTerm.id;
+  }.bind(this)
+
   // Calls executed on page load
   this.getTerms();
+  this.getSchedule();
 
 }]);
 

@@ -7,19 +7,21 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li ng-repeat="term in ctrl.terms"><a ng-click="ctrl.getSchedule(term)" href=''>{{ term.season }} {{ term.year }}</a></li>
+        <li ng-repeat="term in ctrl.terms"><a ng-click="ctrl.selectedTerm=term" href=''>{{ term.season }} {{ term.year }}</a></li>
       </ul>
     </div>
     <br>
-    <div ng-if="ctrl.schedule[0]" class="panel panel-default">
+    <div ng-if="ctrl.selectedTerm.id" class="panel panel-default">
       <div class="panel-heading">
         {{ ctrl.selectedTerm.season }} {{ ctrl.selectedTerm.year }}
       </div>
       <div class="panel-body">
-        <div class="panel panel-default" ng-repeat="course in ctrl.schedule" class="">
+        <div class="panel panel-default" ng-repeat="sch in ctrl.schedule | filter : ctrl.filterSchedule" class="">
           <div class="panel-body">
-            <h4><a href="/course/{{course.id}}">{{ course.name }}</a></h4>
-            <p>Instructor: {{ course.instructor.last_name }}, {{ course.instructor.first_name }}</p>
+            <h4><a href="/course/{{sch.course.id}}">{{ sch.course.name }}</a>
+              <button ng-click="ctrl.dropCourse(sch.id)" class="pull-right btn btn-danger panel-button">Drop</button>
+            </h4>
+            <p>Instructor: {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}</p>
           </div>
         </div>
       </div>
