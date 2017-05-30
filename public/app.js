@@ -212,6 +212,31 @@ app.controller('registerController', ['$http', '$location', function($http, $loc
 
 }]);
 
+app.controller('buildingController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams) {
+  this.buildingId = $routeParams.id;
+  this.building = {};
+
+  this.getBuilding = function(term) {
+    $http({
+      method: 'GET',
+      url: URL + '/buildings/' + this.buildingId,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.building = response.data;
+        console.log(this.building);
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls executed on page load
+  this.getBuilding();
+
+}]);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
@@ -236,6 +261,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/register", {
       templateUrl : "partials/register.htm"
+    })
+    .when("/building/:id", {
+      templateUrl : "partials/building.htm"
     })
     .otherwise({
       redirectTo : "/"

@@ -1,11 +1,13 @@
 <div ng-controller="registerController as ctrl">
   <div class="container">
     <h3>Register</h3>
+    <p>Enter course CRN's to register for multiple courses during registration period.</p>
+    <p>Select the <strong>+</strong> symbol to add more courses.</p>
     <div class="panel panel-default">
       <div class="panel-body">
         <form ng-submit="ctrl.register()" class="form-inline">
           <div ng-repeat="crn in ctrl.crns track by $index" class="form-group">
-            <label>CRN:</label>
+            <label> CRN: </label>
             <input ng-model="ctrl.crns[$index]" type="text" class="form-control" required="true">
           </div>
           <div class="form-group">

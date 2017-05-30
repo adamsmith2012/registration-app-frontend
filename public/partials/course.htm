@@ -20,7 +20,7 @@
             <tr ng-repeat="meeting in ctrl.course.meetings">
               <td>{{ meeting.day }}</td>
               <td>{{ meeting.time }}</td>
-              <td>{{ meeting.room.building.name }}</td>
+              <td><a href="/building/{{meeting.room.building.id}}">{{ meeting.room.building.name }}</a></td>
               <td>{{ meeting.room.name }}</td>
             </tr>
           </tbody>

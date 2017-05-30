@@ -1,0 +1,15 @@
+<div ng-controller="buildingController as ctrl">
+  <div class="container">
+    <h3>{{ ctrl.building.name }} ({{ ctrl.building.symbol }})</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="col-sm-4">
+          <img class="img-responsive img-rounded" ng-src="{{ctrl.building.img}}" alt="">
+        </div>
+        <div class="col-sm-8">
+          <p>{{ ctrl.building.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
