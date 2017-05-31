@@ -42,7 +42,10 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
 }]);
 
 app.controller('loginController', ['$http', '$location', function($http, $location) {
-
+  if (JSON.parse(localStorage.getItem('user'))) {
+    // no logged user, redirect to index
+    $location.path("/home");
+  }
 }]);
 
 app.controller('homeController', ['$http', '$location', function($http, $location) {
