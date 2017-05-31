@@ -144,14 +144,15 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
       }
     }).then(function(response) {
       if (response.status == 201) {
-        console.log("Registered!");
         this.modalMessage = "Successfully Registered!";
+        $('#feedbackModal').modal('show');
+      } else if (response.status == 202) {
+        this.modalMessage = "Course is full!";
         $('#feedbackModal').modal('show');
       } else {
         this.modalMessage = "Failed to Register!";
         $('#feedbackModal').modal('show');
         $('#registerBtn').attr('disabled', false);
-        console.log("Failed");
       }
     }.bind(this));
   }
