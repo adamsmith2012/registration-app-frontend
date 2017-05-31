@@ -112,6 +112,7 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
   this.courseId = $routeParams.id;
   this.student = JSON.parse(localStorage.getItem('user'));
   this.course = {};
+  this.modalMessage = "";
 
   this.getCourse = function() {
     $http({
@@ -124,6 +125,29 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
       if (response.status == 200) {
         this.course = response.data;
       } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  this.register = function(courseId) {
+    $('#registerBtn').attr('disabled', true);
+    $http({
+      method: 'POST',
+      url: URL + '/schedules',
+      data: { student_id: this.student.id, course_id: courseId },
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 201) {
+        console.log("Registered!");
+        this.modalMessage = "Successfully Registered!";
+        $('#feedbackModal').modal('show');
+      } else {
+        this.modalMessage = "Failed to Register!";
+        $('#feedbackModal').modal('show');
+        $('#registerBtn').attr('disabled', false);
         console.log("Failed");
       }
     }.bind(this));

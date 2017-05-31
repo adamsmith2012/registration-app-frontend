@@ -3,7 +3,9 @@
     <h3>{{ctrl.course.name}}</h3>
     <div class="panel panel-default">
       <div class="panel-body">
-        <h5>Instructor: {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}</h5>
+        <h5>Instructor: {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}
+          <button id="registerBtn" ng-click="ctrl.register(ctrl.course.id)" class="pull-right btn btn-primary panel-button">Register</button>
+        </h5>
         <h5>Credits: {{ ctrl.course.credits }}</h5>
         <h5>CRN: {{ ctrl.course.id }}</h5>
         <br>
@@ -29,4 +31,17 @@
       </div>
     </div>
   </div>
+  <!-- Feedback Modal Begins  -->
+  <div class="modal fade" id="feedbackModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">{{ ctrl.modalMessage }}
+            <button type="button" class="pull-right btn btn-secondary" data-dismiss="modal">Close</button>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Feedback modal ends -->
 </div>
