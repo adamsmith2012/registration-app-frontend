@@ -23,6 +23,9 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
         $location.path('/home');
       } else {
         console.log("Incorrect username or password");
+        $('#usernameInput').addClass('has-error');
+        $('#passwordInput').addClass('has-error');
+        $('#loginFeedback').text(' Incorrect username or password');
       }
     }.bind(this));
   }
