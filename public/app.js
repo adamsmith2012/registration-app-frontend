@@ -53,6 +53,8 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
   this.schedule = {};
   this.terms = {};
   this.selectedTerm = { id: null };
+  this.schToDrop = {};
+  this.modalMessage = "";
 
   this.getTerms = function() {
     $http({
@@ -93,10 +95,14 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
       }
     }).then(function(response) {
       if (response.status == 204) {
-        console.log("Successfully dropped course");
+        this.modalMessage = "Successfully dropped course!";
+        $('#dropCourseModal').modal('hide');
+        $('#feedbackModal').modal('show');
         this.getSchedule();
       } else {
-        console.log("Failed");
+        this.modalMessage = "Failed to drop course!";
+        $('#dropCourseModal').modal('hide');
+        $('#feedbackModal').modal('show');
       }
     }.bind(this));
   }
