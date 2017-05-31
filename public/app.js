@@ -376,4 +376,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     .otherwise({
       redirectTo : "/"
     }) ;
-}]);
+}])
+.run( function($rootScope, $location) {
+    // from https://stackoverflow.com/questions/11541695/redirecting-to-a-certain-route-based-on-condition
+    // register listener to watch route changes
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      if (!JSON.parse(localStorage.getItem('user'))) {
+        // no logged user, redirect to index
+        $location.path("/");
+      }
+    });
+ });
