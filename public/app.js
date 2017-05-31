@@ -53,6 +53,8 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
   this.schedule = {};
   this.terms = {};
   this.selectedTerm = { id: null };
+  this.schToDrop = {};
+  this.modalMessage = "";
 
   this.getTerms = function() {
     $http({
@@ -93,10 +95,14 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
       }
     }).then(function(response) {
       if (response.status == 204) {
-        console.log("Successfully dropped course");
+        this.modalMessage = "Successfully dropped course!";
+        $('#dropCourseModal').modal('hide');
+        $('#feedbackModal').modal('show');
         this.getSchedule();
       } else {
-        console.log("Failed");
+        this.modalMessage = "Failed to drop course!";
+        $('#dropCourseModal').modal('hide');
+        $('#feedbackModal').modal('show');
       }
     }.bind(this));
   }
@@ -313,6 +319,30 @@ app.controller('buildingController', ['$http', '$location', '$routeParams', func
 
 }]);
 
+app.controller('instructorController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams) {
+  this.instructorId = $routeParams.id;
+
+  this.getInstructor = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/instructors/' + this.instructorId,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.instructor = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls executed on page load
+  this.getInstructor();
+
+}]);
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -340,7 +370,20 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     .when("/building/:id", {
       templateUrl : "partials/building.htm"
     })
+    .when("/instructor/:id", {
+      templateUrl : "partials/instructor.htm"
+    })
     .otherwise({
       redirectTo : "/"
     }) ;
-}]);
+}])
+.run( function($rootScope, $location) {
+    // from https://stackoverflow.com/questions/11541695/redirecting-to-a-certain-route-based-on-condition
+    // register listener to watch route changes
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      if (!JSON.parse(localStorage.getItem('user'))) {
+        // no logged user, redirect to index
+        $location.path("/");
+      }
+    });
+ });

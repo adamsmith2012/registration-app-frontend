@@ -22,14 +22,52 @@
               <a href="/course/{{sch.course.id}}">
                 {{ sch.course.department.symbol }} {{ sch.course.number }} - {{ sch.course.name }}
               </a>
-              <button ng-click="ctrl.dropCourse(sch.id)" class="pull-right btn btn-danger panel-button">Drop</button>
+              <a href="#" ng-click="ctrl.schToDrop = sch" class="pull-right btn btn-danger panel-button" data-toggle="modal" data-target="#dropCourseModal">Drop</a>
             </h4>
-            <p>Instructor: {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}</p>
+            <p>Instructor:
+              <a href="/instructor/{{sch.course.instructor.id}}">
+                {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}
+              </a>
+            </p>
             <p>Credits: {{ sch.course.credits }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- Drop Course Modal Begins  -->
+  <div class="modal fade" id="dropCourseModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h3 class="modal-title">About Us</h3>
+        </div> -->
+        <div class="modal-header">
+          <h3 class="modal-title">Are you sure you want to drop {{ ctrl.schToDrop.course.department.symbol }} {{ ctrl.schToDrop.course.number }} - {{ctrl.schToDrop.course.name}}?</h3>
+        </div>
+        <div class="modal-footer">
+          <button ng-click="ctrl.dropCourse(ctrl.schToDrop.id)" class="btn btn-danger panel-button">Drop</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Drop Course modal ends -->
+  <!-- Feedback Modal Begins  -->
+  <div class="modal fade" id="feedbackModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">{{ ctrl.modalMessage }}
+          </h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Feedback modal ends -->
 </div>

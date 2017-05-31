@@ -38,7 +38,11 @@
                 {{ course.department.symbol }} {{ course.number }} - {{ course.name }}
               </a>
             </h4>
-            <p>Instructor: {{ course.instructor.last_name }}, {{ course.instructor.first_name }}</p>
+            <p>Instructor:
+              <a href="/instructor/{{course.instructor.id}}">
+                {{ course.instructor.last_name }}, {{ course.instructor.first_name }}
+              </a>
+            </p>
             <p>Credits: {{ course.credits }}</p>
             <p>CRN: {{ course.id }}</p>
           </div>
