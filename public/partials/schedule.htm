@@ -18,7 +18,10 @@
       <div class="panel-body">
         <div class="panel panel-default" ng-repeat="sch in ctrl.schedule | filter : ctrl.filterSchedule" class="">
           <div class="panel-body">
-            <h4><a href="/course/{{sch.course.id}}">{{ sch.course.name }}</a>
+            <h4>
+              <a href="/course/{{sch.course.id}}">
+                {{ sch.course.department.symbol }} {{ sch.course.number }} - {{ sch.course.name }}
+              </a>
               <button ng-click="ctrl.dropCourse(sch.id)" class="pull-right btn btn-danger panel-button">Drop</button>
             </h4>
             <p>Instructor: {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}</p>

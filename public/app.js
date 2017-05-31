@@ -164,7 +164,23 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
 app.controller('coursesController', ['$http', '$location', function($http, $location) {
 
   this.terms = {};
+  this.departments = {};
   this.courses = {};
+  this.selectedDep = {};
+  this.selectedTerm = {};
+
+  this.getDepartments = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/departments'
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.departments = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
 
   this.getTerms = function() {
     $http({
@@ -182,13 +198,12 @@ app.controller('coursesController', ['$http', '$location', function($http, $loca
   this.getCourses = function(term) {
     $http({
       method: 'GET',
-      url: URL + '/terms/' + term.id + '/courses',
+      url: URL + '/courses',
       headers: {
         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
       }
     }).then(function(response) {
       if (response.status == 200) {
-        this.selectedTerm = term;
         this.courses = response.data;
       } else {
         console.log("Failed");
@@ -196,8 +211,18 @@ app.controller('coursesController', ['$http', '$location', function($http, $loca
     }.bind(this));
   }
 
+  this.filterCourses = function(course) {
+    return course.department_id == this.selectedDep.id && course.term_id == this.selectedTerm.id;
+  }.bind(this);
+
+  this.changeText = function(elem, text) {
+    $('#' + elem).text(text);
+  }
+
   // Calls executed on page load
+  this.getDepartments();
   this.getTerms();
+  this.getCourses();
 
 }]);
 

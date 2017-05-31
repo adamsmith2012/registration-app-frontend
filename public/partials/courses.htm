@@ -1,24 +1,43 @@
 <div ng-controller="coursesController as ctrl">
   <div class="container">
     <h3>Courses</h3>
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Term
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li ng-repeat="term in ctrl.terms"><a ng-click="ctrl.getCourses(term)" href=''>{{ term.season }} {{ term.year }}</a></li>
-      </ul>
-    </div>
+    <ul class="list-inline">
+      <li>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span id="depText">Department</span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li ng-repeat="dep in ctrl.departments"><a ng-click="ctrl.selectedDep = dep; ctrl.changeText('depText', dep.symbol)" href=''>{{ dep.symbol }}</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span id="termText">Term</span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li ng-repeat="term in ctrl.terms"><a ng-click="ctrl.selectedTerm = term; ctrl.changeText('termText', term.symbol)" href=''>{{ term.season }} {{ term.year }}</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
     <br>
-    <div ng-if="ctrl.courses[0]" class="panel panel-default">
+    <div ng-if="ctrl.selectedTerm.id && ctrl.selectedDep.id" class="panel panel-default">
       <div class="panel-heading">
-        {{ ctrl.selectedTerm.season }} {{ ctrl.selectedTerm.year }}
+        {{ ctrl.selectedDep.symbol }} {{ ctrl.selectedTerm.season }} {{ ctrl.selectedTerm.year }}
       </div>
       <div class="panel-body">
-        <div class="panel panel-default" ng-repeat="course in ctrl.courses" class="">
+        <div class="panel panel-default" ng-repeat="course in ctrl.courses | filter : ctrl.filterCourses" class="">
           <div class="panel-body">
-            <h4><a href="/course/{{course.id}}">{{ course.name }}</a></h4>
+            <h4>
+              <a href="/course/{{course.id}}">
+                {{ course.department.symbol }} {{ course.number }} - {{ course.name }}
+              </a>
+            </h4>
             <p>Instructor: {{ course.instructor.last_name }}, {{ course.instructor.first_name }}</p>
             <p>Credits: {{ course.credits }}</p>
             <p>CRN: {{ course.id }}</p>
