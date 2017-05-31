@@ -1,0 +1,19 @@
+<div ng-controller="instructorController as ctrl">
+  <div class="container">
+    <h3>{{ ctrl.instructor.first_name }} {{ ctrl.instructor.last_name }}</h3>
+    <div class="panel panel-default">
+      <!-- <div class="panel-heading">
+        {{ ctrl.instructor.first_name }} {{ ctrl.instructor.last_name }}
+      </div> -->
+      <div class="panel-body">
+        <div class="col-sm-3">
+          <img src="{{ctrl.instructor.img}}" alt="">
+        </div>
+        <div class="col-sm-9">
+          <h5>Email: {{ ctrl.instructor.email }}</h5>
+          <p>{{ ctrl.instructor.bio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

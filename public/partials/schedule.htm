@@ -24,12 +24,15 @@
               </a>
               <button ng-click="ctrl.dropCourse(sch.id)" class="pull-right btn btn-danger panel-button">Drop</button>
             </h4>
-            <p>Instructor: {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}</p>
+            <p>Instructor:
+              <a href="/instructor/{{sch.course.instructor.id}}">
+                {{ sch.course.instructor.last_name }}, {{ sch.course.instructor.first_name }}
+              </a>
+            </p>
             <p>Credits: {{ sch.course.credits }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>

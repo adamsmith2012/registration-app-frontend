@@ -5,7 +5,10 @@
     </h3>
     <div class="panel panel-default">
       <div class="panel-body">
-        <h5>Instructor: {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}
+        <h5>Instructor:
+          <a href="/instructor/{{ ctrl.course.instructor.id }}">
+            {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}
+          </a>
           <button id="registerBtn" ng-click="ctrl.register(ctrl.course.id)" class="pull-right btn btn-primary panel-button">Register</button>
         </h5>
         <h5>Credits: {{ ctrl.course.credits }}</h5>

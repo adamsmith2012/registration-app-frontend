@@ -313,6 +313,30 @@ app.controller('buildingController', ['$http', '$location', '$routeParams', func
 
 }]);
 
+app.controller('instructorController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams) {
+  this.instructorId = $routeParams.id;
+
+  this.getInstructor = function() {
+    $http({
+      method: 'GET',
+      url: URL + '/instructors/' + this.instructorId,
+      headers: {
+        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+      }
+    }).then(function(response) {
+      if (response.status == 200) {
+        this.instructor = response.data;
+      } else {
+        console.log("Failed");
+      }
+    }.bind(this));
+  }
+
+  // Calls executed on page load
+  this.getInstructor();
+
+}]);
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state
     $routeProvider
@@ -339,6 +363,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when("/building/:id", {
       templateUrl : "partials/building.htm"
+    })
+    .when("/instructor/:id", {
+      templateUrl : "partials/instructor.htm"
     })
     .otherwise({
       redirectTo : "/"
