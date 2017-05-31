@@ -11,6 +11,7 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
   this.student = JSON.parse(localStorage.getItem('user'));
 
   this.login = function(userPass) {
+    $('#loginSpinner').show();
     $http({
       method: 'POST',
       url: URL + '/students/login',
@@ -22,6 +23,7 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
         localStorage.setItem('user', JSON.stringify(response.data.student));
         $location.path('/home');
       } else {
+        $('#loginSpinner').hide();
         console.log("Incorrect username or password");
         $('#usernameInput').addClass('has-error');
         $('#passwordInput').addClass('has-error');
