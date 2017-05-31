@@ -1,6 +1,8 @@
 <div ng-controller="courseController as ctrl">
   <div class="container">
-    <h3>{{ctrl.course.name}}</h3>
+    <h3>
+      {{ctrl.course.department.symbol}} {{ctrl.course.number}} - {{ctrl.course.name}}
+    </h3>
     <div class="panel panel-default">
       <div class="panel-body">
         <h5>Instructor: {{ ctrl.course.instructor.last_name }}, {{ ctrl.course.instructor.first_name }}
