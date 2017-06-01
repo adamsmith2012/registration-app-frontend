@@ -60,6 +60,7 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
   this.logout = function() {
     localStorage.clear('token');
     localStorage.clear('user');
+    localStorage.clear('courses');
     this.student = {};
     $location.path('/');
   }
