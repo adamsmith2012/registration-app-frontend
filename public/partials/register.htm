@@ -5,11 +5,11 @@
     <p>To remove a course from the list select the '<strong>-</strong>' symbol next to the course you wish to remove.</p>
     <p>The courses listed will be requested for registration by selecting the 'Register' button.</p>
     <p>After selecting Register you will see either a checkmark or an X next to each course showing if the class was registered for successfully.</p>
-    <div class="panel panel-default">
+    <div ng-if="ctrl.courses" class="panel panel-default">
       <div class="panel-body">
         <div class="col-sm-12">
           <form ng-submit="ctrl.register()" class="form-horizontal">
-            <div id="input{{$index}}" ng-repeat="course in ctrl.courses track by $index" class="form-group">
+            <div id="input{{course.id}}" ng-repeat="course in ctrl.courses track by $index" class="form-group">
               <div class="col-sm-11 align-middle">
                 <h3 class="help-block">
                   {{course.department.symbol}} {{course.number }} - {{course.name}}
@@ -19,7 +19,7 @@
                 </h3>
               </div>
               <div hidden="true">
-                <input ng-model="ctrl.courses[$index].id" type="text" >
+                <input ng-model="ctrl.courses[course.id].id" type="text" >
               </div>
               <!-- <h5 id="response{{$index}}" class="col-sm-9"></h5> -->
             </div>

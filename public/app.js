@@ -11,11 +11,11 @@ if(window.location.origin == "http://localhost:8000") {
 app.service('registrationService', function() {
   var courses = JSON.parse(localStorage.getItem('courses'));
   if (!courses) {
-    courses = [];
+    courses = {};
   }
 
   var addCourse = function(newCourse) {
-      courses.push(newCourse);
+      courses[newCourse.id] = newCourse;
       localStorage.setItem('courses', JSON.stringify(courses));
   };
 
@@ -297,10 +297,10 @@ app.controller('registerController', ['$http', '$location', 'registrationService
   console.log(this.courses);
   this.register = function() {
 
-    for (var i=0; i < this.courses.length; i++) {
-      var course_id = this.courses[i].id;
-      let $responseText = $('#response' + i.toString());
-      let $input = $('#input' + i.toString()); // set spinner
+    for (var key in this.courses) {
+      var course_id = this.courses[key].id;
+      let $responseText = $('#response' + course_id.toString());
+      let $input = $('#input' + course_id.toString()); // set spinner
       $($input.find($('i'))[0]).addClass("fa fa-refresh fa-spin");
       $http({
         method: 'POST',
