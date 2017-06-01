@@ -32,7 +32,23 @@ app.service('registrationService', function() {
 
 /***** CONTROLLERS *****/
 
-app.controller('mainController', ['$http', '$location', function($http, $location) {
+app.controller('mainController', ['$http', '$location', '$rootScope', function($http, $location, $rootScope) {
+
+  $rootScope.$on("$routeChangeSuccess", function(args){
+    var $navs = $('#nav-links').find($('li'));
+    for (var i=0; i < $navs.length; i++) {
+      var $li = $($navs[i]);
+      var $a = $($li.find('a')[0]);
+      $li.show();
+      if ($location.path() == '/') {
+        $li.hide();
+      } else if ($a.attr('href') == $location.path()) {
+        $li.addClass('active');
+      } else {
+        $li.removeClass('active');
+      }
+    }
+  });
 
   this.student = JSON.parse(localStorage.getItem('user'));
 
