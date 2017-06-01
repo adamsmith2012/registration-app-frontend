@@ -276,6 +276,8 @@ app.controller('registerController', ['$http', '$location', function($http, $loc
       var course_id = this.crns[i];
       let $responseText = $('#response' + i.toString());
       let $input = $('#input' + i.toString());
+      // $input.find($('i')).show();
+      $($input.find($('i'))[0]).show();
       $http({
         method: 'POST',
         url: URL + '/schedules',
@@ -284,6 +286,7 @@ app.controller('registerController', ['$http', '$location', function($http, $loc
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
         }
       }).then(function($input, $responseText, response) {
+        $($input.find($('i'))[0]).hide();
         if (response.status == 201) {
           this.courses[course_id.toString()] = response.data;
           $input.addClass('has-success');
