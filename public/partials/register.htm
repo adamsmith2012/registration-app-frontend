@@ -1,26 +1,34 @@
 <div ng-controller="registerController as ctrl">
   <div class="container">
     <h3>Register</h3>
-    <p>Enter course CRN's to register for multiple courses during registration period.</p>
-    <p>Select the <strong>+</strong> symbol to add more courses.</p>
-    <div class="panel panel-default">
+    <p>To add a course to this list, find the course on the Available Courses page and select 'Register'</p>
+    <p>To remove a course from the list select the '<strong>-</strong>' symbol next to the course you wish to remove.</p>
+    <p>The courses listed will be requested for registration by selecting the 'Register' button.</p>
+    <p>After selecting Register you will see either a checkmark or an X next to each course showing if the class was registered for successfully.</p>
+    <div ng-if="ctrl.courses" class="panel panel-default">
       <div class="panel-body">
         <div class="col-sm-12">
           <form ng-submit="ctrl.register()" class="form-horizontal">
-            <div id="input{{$index}}" ng-repeat="crn in ctrl.crns track by $index" class="form-group">
-              <label class="col-sm-1 control-label">CRN:</label>
-              <div class="col-sm-2">
-                <input ng-model="ctrl.crns[$index]" type="text" class="form-control">
+            <div id="input{{course.id}}" ng-repeat="course in ctrl.courses track by $index" class="form-group">
+              <div class="col-sm-11 align-middle">
+                <h3 class="help-block">
+                  {{course.department.symbol}} {{course.number }} - {{course.name}}
+                  <!-- <i class="fa fa-refresh fa-spin" aria-hidden="true"></i> -->
+                  <!-- <i style="display:none" class="fa fa-check-square-o" aria-hidden="true"></i> -->
+                  <i></i>
+                </h3>
               </div>
-              <i style="display:none; font-size:28px" class="fa fa-refresh fa-spin"></i>
-              <h5 id="response{{$index}}" class="col-sm-9"></h5>
+              <div hidden="true">
+                <input ng-model="ctrl.courses[course.id].id" type="text" >
+              </div>
+              <!-- <h5 id="response{{$index}}" class="col-sm-9"></h5> -->
             </div>
             <div class="form-group">
-              <div class="col-sm-offset-1 col-sm-2">
-                <button type="submit" class="btn btn-default">Submit</button>
-                <button ng-click="ctrl.addCRN()" type="button" class="btn btn-default pull-right" aria-label="Left Align">
+              <div class="col-sm-2">
+                <button type="submit" class="btn btn-default">Register</button>
+                <!-- <button ng-click="ctrl.addCRN()" type="button" class="btn btn-default pull-right" aria-label="Left Align">
                   <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button>
+                </button> -->
               </div>
             </div>
           </form>

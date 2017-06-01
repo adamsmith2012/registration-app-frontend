@@ -6,6 +6,32 @@ if(window.location.origin == "http://localhost:8000") {
   URL = "https://courseweb-api.herokuapp.com";
 }
 
+/***** SERVICES *****/
+
+app.service('registrationService', function() {
+  var courses = JSON.parse(localStorage.getItem('courses'));
+  if (!courses) {
+    courses = {};
+  }
+
+  var addCourse = function(newCourse) {
+      courses[newCourse.id] = newCourse;
+      localStorage.setItem('courses', JSON.stringify(courses));
+  };
+
+  var getCourses = function(){
+      return JSON.parse(localStorage.getItem('courses'));
+  };
+
+  return {
+    addCourse: addCourse,
+    getCourses: getCourses
+  };
+
+});
+
+/***** CONTROLLERS *****/
+
 app.controller('mainController', ['$http', '$location', function($http, $location) {
 
   this.student = JSON.parse(localStorage.getItem('user'));
@@ -120,7 +146,7 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
 
 }]);
 
-app.controller('courseController', ['$http', '$location', '$routeParams', function($http, $location, $routeParams) {
+app.controller('courseController', ['$http', '$location', '$routeParams', 'registrationService', function($http, $location, $routeParams, registrationService) {
   this.courseId = $routeParams.id;
   this.student = JSON.parse(localStorage.getItem('user'));
   this.course = {};
@@ -142,28 +168,31 @@ app.controller('courseController', ['$http', '$location', '$routeParams', functi
     }.bind(this));
   }
 
-  this.register = function(courseId) {
+  this.register = function(course) {
     $('#registerBtn').attr('disabled', true);
-    $http({
-      method: 'POST',
-      url: URL + '/schedules',
-      data: { student_id: this.student.id, course_id: courseId },
-      headers: {
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
-      }
-    }).then(function(response) {
-      if (response.status == 201) {
-        this.modalMessage = "Successfully Registered!";
-        $('#feedbackModal').modal('show');
-      } else if (response.status == 202) {
-        this.modalMessage = "Course is full!";
-        $('#feedbackModal').modal('show');
-      } else {
-        this.modalMessage = "Failed to Register!";
-        $('#feedbackModal').modal('show');
-        $('#registerBtn').attr('disabled', false);
-      }
-    }.bind(this));
+    registrationService.addCourse(course);
+    this.modalMessage = "Course added to registration list.";
+    $('#feedbackModal').modal('show');
+    // $http({
+    //   method: 'POST',
+    //   url: URL + '/schedules',
+    //   data: { student_id: this.student.id, course_id: courseId },
+    //   headers: {
+    //     'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+    //   }
+    // }).then(function(response) {
+    //   if (response.status == 201) {
+    //     this.modalMessage = "Successfully Registered!";
+    //     $('#feedbackModal').modal('show');
+    //   } else if (response.status == 202) {
+    //     this.modalMessage = "Course is full!";
+    //     $('#feedbackModal').modal('show');
+    //   } else {
+    //     this.modalMessage = "Failed to Register!";
+    //     $('#feedbackModal').modal('show');
+    //     $('#registerBtn').attr('disabled', false);
+    //   }
+    // }.bind(this));
   }
 
   // Calls executed on page load
@@ -262,22 +291,17 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
 
 }]);
 
-app.controller('registerController', ['$http', '$location', function($http, $location) {
+app.controller('registerController', ['$http', '$location', 'registrationService', function($http, $location, registrationService) {
   this.student = JSON.parse(localStorage.getItem('user'));
-  this.crns = [null];
-  this.courses = {};
-
-  this.addCRN = function() {
-    this.crns.push(null);
-  }
-
+  this.courses = registrationService.getCourses();
+  console.log(this.courses);
   this.register = function() {
-    for (var i=0; i < this.crns.length; i++) {
-      var course_id = this.crns[i];
-      let $responseText = $('#response' + i.toString());
-      let $input = $('#input' + i.toString());
-      // $input.find($('i')).show();
-      $($input.find($('i'))[0]).show();
+
+    for (var key in this.courses) {
+      var course_id = this.courses[key].id;
+      let $responseText = $('#response' + course_id.toString());
+      let $input = $('#input' + course_id.toString()); // set spinner
+      $($input.find($('i'))[0]).addClass("fa fa-refresh fa-spin");
       $http({
         method: 'POST',
         url: URL + '/schedules',
@@ -286,19 +310,53 @@ app.controller('registerController', ['$http', '$location', function($http, $loc
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
         }
       }).then(function($input, $responseText, response) {
-        $($input.find($('i'))[0]).hide();
+        $($input.find($('i'))[0]).removeClass(); // Remove all classes
         if (response.status == 201) {
-          this.courses[course_id.toString()] = response.data;
-          $input.addClass('has-success');
-          $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
+          $input.addClass('has-success'); // set text green
+          $($input.find($('i'))[0]).addClass("fa fa-check-square-o"); // Set check mark
+          // $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
         } else {
-          $input.addClass('has-error');
-          $responseText.text("Failed to register!");
+          $input.addClass('has-error'); // set text red
+          $($input.find($('i'))[0]).addClass("fa fa-times"); // Set 'X' mark
+          // $responseText.text("Failed to register!");
         }
       }.bind(this, $input, $responseText));
     };
 
   }
+
+  // this.addCRN = function() {
+  //   this.crns.push(null);
+  // }
+
+  // this.register = function() {
+  //   for (var i=0; i < this.crns.length; i++) {
+  //     var course_id = this.crns[i];
+  //     let $responseText = $('#response' + i.toString());
+  //     let $input = $('#input' + i.toString());
+  //     // $input.find($('i')).show();
+  //     $($input.find($('i'))[0]).show();
+  //     $http({
+  //       method: 'POST',
+  //       url: URL + '/schedules',
+  //       data: { student_id: this.student.id, course_id: course_id },
+  //       headers: {
+  //         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+  //       }
+  //     }).then(function($input, $responseText, response) {
+  //       $($input.find($('i'))[0]).hide();
+  //       if (response.status == 201) {
+  //         this.courses[course_id.toString()] = response.data;
+  //         $input.addClass('has-success');
+  //         $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
+  //       } else {
+  //         $input.addClass('has-error');
+  //         $responseText.text("Failed to register!");
+  //       }
+  //     }.bind(this, $input, $responseText));
+  //   };
+  //
+  // }
 
 }]);
 
@@ -350,6 +408,8 @@ app.controller('instructorController', ['$http', '$location', '$routeParams', fu
   this.getInstructor();
 
 }]);
+
+/***** ROUTES *****/
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) { //.config just runs once on load
     $locationProvider.html5Mode({ enabled: true }); // tell angular to use push state

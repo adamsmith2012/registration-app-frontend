@@ -34,4 +34,5 @@ h3 {
 
 .left {
   text-align: left !important;
+  display: inline !important;
 }
