@@ -31,3 +31,7 @@
 h3 {
   font-family: "Ubuntu";
 }
+
+.left {
+  text-align: left !important;
+}
