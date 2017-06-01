@@ -24,7 +24,6 @@ app.controller('mainController', ['$http', '$location', function($http, $locatio
         $location.path('/home');
       } else {
         $('#loginSpinner').hide();
-        console.log("Incorrect username or password");
         $('#usernameInput').addClass('has-error');
         $('#passwordInput').addClass('has-error');
         $('#loginFeedback').text(' Incorrect username or password');
@@ -84,7 +83,6 @@ app.controller('scheduleController', ['$http', '$location', function($http, $loc
     }).then(function(response) {
       if (response.status == 200) {
         this.schedule = response.data;
-        console.log(this.schedule);
       } else {
         console.log("Failed");
       }
@@ -254,7 +252,6 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
     }).then(function(response) {
       if (response.status == 200) {
         this.student = response.data;
-        console.log(this.student);
         localStorage.setItem('user', JSON.stringify(this.student));
         this.editMode = false;
       } else {
@@ -268,16 +265,17 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
 app.controller('registerController', ['$http', '$location', function($http, $location) {
   this.student = JSON.parse(localStorage.getItem('user'));
   this.crns = [null];
+  this.courses = {};
 
   this.addCRN = function() {
     this.crns.push(null);
-    console.log(this.crns);
   }
 
   this.register = function() {
-
-    this.crns.forEach(function(crn) {
-      var course_id = crn;
+    for (var i=0; i < this.crns.length; i++) {
+      var course_id = this.crns[i];
+      let $responseText = $('#response' + i.toString());
+      let $input = $('#input' + i.toString());
       $http({
         method: 'POST',
         url: URL + '/schedules',
@@ -285,14 +283,17 @@ app.controller('registerController', ['$http', '$location', function($http, $loc
         headers: {
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
         }
-      }).then(function(response) {
+      }).then(function($input, $responseText, response) {
         if (response.status == 201) {
-          console.log("Registered!");
+          this.courses[course_id.toString()] = response.data;
+          $input.addClass('has-success');
+          $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
         } else {
-          console.log("Failed");
+          $input.addClass('has-error');
+          $responseText.text("Failed to register!");
         }
-      }.bind(this));
-    }.bind(this));
+      }.bind(this, $input, $responseText));
+    };
 
   }
 
@@ -312,7 +313,6 @@ app.controller('buildingController', ['$http', '$location', '$routeParams', func
     }).then(function(response) {
       if (response.status == 200) {
         this.building = response.data;
-        console.log(this.building);
       } else {
         console.log("Failed");
       }

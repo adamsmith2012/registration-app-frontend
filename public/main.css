@@ -1,8 +1,4 @@
-
-
-.bordered {
-  border: 1px solid red;
-}
+@import url('https://fonts.googleapis.com/css?family=Kumar+One|Ubuntu');
 
 .vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
@@ -14,4 +10,28 @@
 
 .panel-button {
   margin: -5px;
+}
+
+.logo-div {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  font-family: "Kumar One";
+  font-size: 50px;
+}
+
+.home-btn {
+  font-family: "Kumar One";
+}
+
+h3 {
+  font-family: "Ubuntu";
+}
+
+.left {
+  text-align: left !important;
 }
