@@ -294,7 +294,7 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
 app.controller('registerController', ['$http', '$location', 'registrationService', function($http, $location, registrationService) {
   this.student = JSON.parse(localStorage.getItem('user'));
   this.courses = registrationService.getCourses();
-
+  console.log(this.courses);
   this.register = function() {
 
     for (var i=0; i < this.courses.length; i++) {

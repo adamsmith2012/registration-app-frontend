@@ -1,8 +1,10 @@
 <div ng-controller="registerController as ctrl">
   <div class="container">
     <h3>Register</h3>
-    <p>Enter course CRN's to register for multiple courses during registration period.</p>
-    <p>Select the <strong>+</strong> symbol to add more courses.</p>
+    <p>To add a course to this list, find the course on the Available Courses page and select 'Register'</p>
+    <p>To remove a course from the list select the '<strong>-</strong>' symbol next to the course you wish to remove.</p>
+    <p>The courses listed will be requested for registration by selecting the 'Register' button.</p>
+    <p>After selecting Register you will see either a checkmark or an X next to each course showing if the class was registered for successfully.</p>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="col-sm-12">
@@ -17,13 +19,13 @@
                 </h3>
               </div>
               <div hidden="true">
-                <input ng-model="ctrl.courses[$index].id" type="text" class="form-control">
+                <input ng-model="ctrl.courses[$index].id" type="text" >
               </div>
               <!-- <h5 id="response{{$index}}" class="col-sm-9"></h5> -->
             </div>
             <div class="form-group">
-              <div class="col-sm-offset-1 col-sm-2">
-                <button type="submit" class="btn btn-default">Submit</button>
+              <div class="col-sm-2">
+                <button type="submit" class="btn btn-default">Register</button>
                 <!-- <button ng-click="ctrl.addCRN()" type="button" class="btn btn-default pull-right" aria-label="Left Align">
                   <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button> -->
