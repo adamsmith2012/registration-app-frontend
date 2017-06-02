@@ -13,19 +13,24 @@ app.service('registrationService', function() {
   if (!courses) {
     courses = {};
   }
-
   var addCourse = function(newCourse) {
-      courses[newCourse.id] = newCourse;
-      localStorage.setItem('courses', JSON.stringify(courses));
+    courses[newCourse.id] = newCourse;
+    localStorage.setItem('courses', JSON.stringify(courses));
   };
 
-  var getCourses = function(){
-      return JSON.parse(localStorage.getItem('courses'));
+  var getCourses = function() {
+    return JSON.parse(localStorage.getItem('courses'));
   };
+
+  var removeCourse = function(courseId) {
+    delete courses[courseId];
+    localStorage.setItem('courses', JSON.stringify(courses));
+  }
 
   return {
     addCourse: addCourse,
-    getCourses: getCourses
+    getCourses: getCourses,
+    removeCourse: removeCourse
   };
 
 });
@@ -311,6 +316,9 @@ app.controller('studentInfoController', ['$http', '$location', function($http, $
 app.controller('registerController', ['$http', '$location', 'registrationService', function($http, $location, registrationService) {
   this.student = JSON.parse(localStorage.getItem('user'));
   this.courses = registrationService.getCourses();
+  if (Object.keys(this.courses).length == 0) {
+    this.courses = null;
+  }
   this.register = function() {
 
     for (var key in this.courses) {
@@ -341,38 +349,13 @@ app.controller('registerController', ['$http', '$location', 'registrationService
 
   }
 
-  // this.addCRN = function() {
-  //   this.crns.push(null);
-  // }
-
-  // this.register = function() {
-  //   for (var i=0; i < this.crns.length; i++) {
-  //     var course_id = this.crns[i];
-  //     let $responseText = $('#response' + i.toString());
-  //     let $input = $('#input' + i.toString());
-  //     // $input.find($('i')).show();
-  //     $($input.find($('i'))[0]).show();
-  //     $http({
-  //       method: 'POST',
-  //       url: URL + '/schedules',
-  //       data: { student_id: this.student.id, course_id: course_id },
-  //       headers: {
-  //         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
-  //       }
-  //     }).then(function($input, $responseText, response) {
-  //       $($input.find($('i'))[0]).hide();
-  //       if (response.status == 201) {
-  //         this.courses[course_id.toString()] = response.data;
-  //         $input.addClass('has-success');
-  //         $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
-  //       } else {
-  //         $input.addClass('has-error');
-  //         $responseText.text("Failed to register!");
-  //       }
-  //     }.bind(this, $input, $responseText));
-  //   };
-  //
-  // }
+  this.removeCourse = function(courseId) {
+    registrationService.removeCourse(courseId);
+    this.courses = registrationService.getCourses();
+    if (Object.keys(this.courses).length == 0) {
+      this.courses = null;
+    }
+  }
 
 }]);
 
