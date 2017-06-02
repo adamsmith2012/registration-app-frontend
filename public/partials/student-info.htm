@@ -9,6 +9,7 @@
         <h5>Student ID: {{ ctrl.student.num }}</h5>
         <h5>Name: {{ ctrl.student.first_name }} {{ ctrl.student.last_name }}</h5>
         <h5>Email: {{ ctrl.student.email }}</h5>
+        <h5>DOB: {{ ctrl.student.dob | date }}</h5>
       </div>
       <div ng-if="ctrl.editMode" class="panel-body">
         <form ng-submit="ctrl.editInfo()" class="form-horizontal">
