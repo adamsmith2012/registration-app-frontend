@@ -31,7 +31,7 @@
         {{ ctrl.selectedDep.symbol }} {{ ctrl.selectedTerm.season }} {{ ctrl.selectedTerm.year }}
       </div>
       <div class="panel-body">
-        <div class="panel panel-default" ng-repeat="course in ctrl.courses | filter : ctrl.filterCourses" class="">
+        <div class="panel panel-default" ng-repeat="course in ctrl.courses | filter : ctrl.filterCourses | orderBy: 'number'" class="">
           <div class="panel-body">
             <h4>
               <a href="/course/{{course.id}}">
