@@ -195,26 +195,6 @@ app.controller('courseController', ['$http', '$location', '$routeParams', 'regis
     registrationService.addCourse(course);
     this.modalMessage = "Course added to registration list.";
     $('#feedbackModal').modal('show');
-    // $http({
-    //   method: 'POST',
-    //   url: URL + '/schedules',
-    //   data: { student_id: this.student.id, course_id: courseId },
-    //   headers: {
-    //     'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('token'))
-    //   }
-    // }).then(function(response) {
-    //   if (response.status == 201) {
-    //     this.modalMessage = "Successfully Registered!";
-    //     $('#feedbackModal').modal('show');
-    //   } else if (response.status == 202) {
-    //     this.modalMessage = "Course is full!";
-    //     $('#feedbackModal').modal('show');
-    //   } else {
-    //     this.modalMessage = "Failed to Register!";
-    //     $('#feedbackModal').modal('show');
-    //     $('#registerBtn').attr('disabled', false);
-    //   }
-    // }.bind(this));
   }
 
   // Calls executed on page load
@@ -338,11 +318,9 @@ app.controller('registerController', ['$http', '$location', 'registrationService
         if (response.status == 201) {
           $input.addClass('has-success'); // set text green
           $($input.find($('i'))[0]).addClass("fa fa-check-square-o"); // Set check mark
-          // $responseText.text("Registered for " + response.data.course.department.symbol + " " + response.data.course.number + " - " + response.data.course.name);
         } else {
           $input.addClass('has-error'); // set text red
           $($input.find($('i'))[0]).addClass("fa fa-times"); // Set 'X' mark
-          // $responseText.text("Failed to register!");
         }
       }.bind(this, $input, $responseText));
     };
